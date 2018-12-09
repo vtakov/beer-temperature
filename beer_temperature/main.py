@@ -1,10 +1,10 @@
 #!/usr/bin/python
 import sys
 import threading
-import Adafruit_DHT
-import ConfigParser
+import adafruit_dht
+import configparser
 
-config = ConfigParser.RawConfigParser()
+config = configparser.RawConfigParser()
 config.add_section('Temperature')
 config.add_section('Humidity')
 
@@ -17,7 +17,7 @@ t_last = 0
 def printIt():
     threading.Timer(60.0, printIt).start()
 
-    h, t = Adafruit_DHT.read_retry(11, 4)
+    h, t = adafruit_dht.read()
 
     global t_avrg, t_count, t_min, t_max
 
@@ -36,7 +36,7 @@ def printIt():
     config.set('Temperature', 'min', t_min)
     config.set('Temperature', 'max', t_max)
 
-    with open('/home/pi/Desktop/temp.cfg', 'wb') as configFile:
+    with open('./temp.cfg', 'wb') as configFile:
         config.write(configFile)
 
 printIt()
